@@ -21,16 +21,16 @@ function SimpleNumber($limit)
         }
     }
 
-    for($i=0;$i<=$limit;$i++)
+    /*for($i=0;$i<=$limit;$i++)
     {
         if(empty($arr[$i]))
         {
             unset($arr[$i]);
         }
-    }
+    }*/
 
 
-    return $arr;
+    return array_filter($arr);
 };
 
 function my_table()
