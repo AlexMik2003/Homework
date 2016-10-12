@@ -144,15 +144,55 @@ function view($url,$flag)
             }
             break;
         case "func":
-        case 0:
-            $view .= "<a href='/'>BACK</a>";
-            $view .=func();
-            break;
+            switch ($flag) {
+                case 0:
+                    $view .= "<a href='/'>BACK</a>";
+                    $view .= func();
+                    break;
+                case 1:
+                    $view .= func_home1();
+                    break;
+                case 2:
+                    $view .= func_home2();
+                    break;
+                case 3:
+                    $view .= func_home3();
+                    break;
+                case 4:
+                    $view .= func_home4();
+                    break;
+                case 5:
+                    $view .= func_home5();
+                    break;
+                case 6:
+                    $view .= func_home6();
+                    break;
+                case 7:
+                    $view .= func_home7();
+                    break;
+                case 8:
+                    $view .= func_home8();
+                    break;
+                case 9:
+                    $view .= func_home9();
+                    break;
+                case 10:
+                    $view .= func_home10();
+                    break;
+                case 11:
+                    $view .= func_home11();
+                    break;
+                case 12:
+                    $view .= func_home12();
+                    break;
+                case 13:
+                    $view .= func_home13();
+                    break;
+            }
             break;
     }
     return $view;
 }
-
 
 
 

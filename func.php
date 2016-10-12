@@ -88,3 +88,496 @@ HTML;
 
     return $view;
 }
+
+
+function func_home1()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-1</h2>
+    <pre>";
+    $view .= "<form method='post' action=''>
+    <textarea name='text1'></textarea><br><br>
+    <textarea name='text2'></textarea><br><br>
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+
+    if(!empty($_POST["ok"]))
+    {
+        $view .=getCommonWords($_POST["text1"],$_POST["text2"]);
+    }
+    $view .= "</pre>";
+    return $view;
+}
+
+function getCommonWords($a,$b)
+{
+    return $a." ".$b;
+}
+
+function func_home2()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-2</h2>
+    <pre>";
+    $view .= "<form method='post' action=''>
+    <textarea name='text'></textarea><br><br>   
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+
+    if(!empty($_POST["ok"]))
+    {
+        $text = $_POST["text"];
+        $pattern = '~(\w+)~';
+        preg_match_all($pattern, $text, $matches);
+        $arr = $matches[1];
+        for ($i = 0, $count = count($arr); $i < $count; $i++) {
+            for($j=0;$j<$count-1;$j++)
+            {
+                if(strlen($arr[$j]) < strlen($arr[$j+1]))
+                {
+                    $buffer = $arr[$j];
+                    $arr[$j] = $arr[$j+1];
+                    $arr[$j+1] = $buffer;
+                }
+            }
+
+        }
+       $view .= "TOP MAX 3 WORD: ".PHP_EOL.PHP_EOL;
+        $view .= $arr[0].PHP_EOL.$arr[1].PHP_EOL.$arr[2].PHP_EOL;
+    }
+    $view .= "</pre>";
+    return $view;
+}
+
+function func_home3()
+{
+$view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-3</h2>
+    <pre>";
+    $view .= "<form method='post' action=''>
+    <input type='number' name='numb'><br><br>   
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+    $file = "text.txt";
+    if(!empty($_POST["ok"]))
+    {
+        $numb = $_POST["numb"];
+        if($numb>3) {
+            $fp = fopen($file, "r+");
+            if ($fp) {
+                $arr = explode(" ", file_get_contents($file));
+                foreach ($arr as $key => $value) {
+                    if ((strlen($value) / 2) > $numb) {
+                        unset($arr[$key]);
+                    }
+                }
+                $arr = implode(" ", $arr);
+                $text = fwrite($fp, $arr);
+                if ($text) {
+                    fclose($fp);
+                } else {
+                    $view .= "ERROR!";
+                }
+            } else {
+                $view .= "ERROR. File is not exist!";
+            }
+        }
+        else{
+            $view .= "ERROR. Numb is too small. Min 3 symbols!";
+        }
+    }
+    $view .= "</pre>";
+    return $view;
+}
+
+function func_home4()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-4</h2>
+    <pre>";
+    $view .= "<form method='post' action=''>
+    <label>Write Full Path to Direcory:</label><br><br> 
+    <input type='text' name='dir'><br><br>   
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+    if(!empty($_POST["ok"]))
+    {
+        $dir = $_POST["dir"];
+        if(file_exists($dir)) {
+            if(is_dir($dir)) {
+                $files = scandir($dir);
+              foreach ($files as $file)
+                {
+                    $view .=$file.PHP_EOL;
+                }
+            }
+            else{
+                $view .= "ERROR.{$dir} is not directory!";
+            }
+        }
+        else{
+            $view .= "ERROR. Dir is not exist!";
+        }
+    }
+        $view .= "</pre>";
+        return $view;
+}
+
+function func_home5()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-5</h2>
+    <pre>";
+    $view .= "<form method='post' action=''>
+    <label>Write Full Path to Direcory:</label><br><br> 
+    <input type='text' name='dir'><br><br>   
+    <label>Write Search Word:</label><br><br> 
+    <input type='text' name='word'><br><br>  
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+    if(!empty($_POST["ok"]))
+    {
+        $dir = $_POST["dir"];
+        $word = $_POST["word"];
+        if(file_exists($dir)) {
+            if(is_dir($dir)) {
+                $files = scandir($dir);
+                foreach ($files as $file)
+                {
+                    if(!empty($word) && substr_count($file,$word) > 0) {
+                        $view .= $file . PHP_EOL;
+                    }
+
+                }
+            }
+            else{
+                $view .= "ERROR.{$dir} is not directory!";
+            }
+        }
+        else{
+            $view .= "ERROR. Dir is not exist!";
+        }
+    }
+    $view .= "</pre>";
+    return $view;
+}
+
+function func_home6()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-6</h2>
+    <pre>";
+    $view .= "<form method='post' action='' enctype='multipart/form-data'>
+    <label>Upload Photos</label><br><br> 
+    <input type='file' name='photo' multiple><br><br>       
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+    if(!empty($_POST["ok"]))
+    {
+        $uploaddir = './gallery/';
+        $types = array('image/png', 'image/jpeg');
+        $uploadfile = $uploaddir . basename($_FILES['photo']['name']);
+        if (!in_array($_FILES['photo']['type'], $types)) {
+            $view .='Wrong file format!'.PHP_EOL;
+        }
+        else{
+            if (copy($_FILES['photo']['tmp_name'], $uploadfile)) {
+                $view .= "<h3>Файл успешно загружен на сервер</h3>";
+            } else {
+                $view .= "<h3>Ошибка! Не удалось загрузить файл на сервер!</h3>";
+                exit;
+            }
+        }
+        if(file_exists($uploaddir)) {
+            if(is_dir($uploaddir)) {
+                $files = scandir($uploaddir);
+                $view .= "<table border='1'>
+                <thead>
+                <tr>
+                <th>Image</th>
+                 <th>Name</th>
+                  <th>Date</th>
+                </tr>                
+                </thead>
+                <tbody>
+                ";
+
+                foreach ($files as $file)
+                {
+                        if($file!=="." && $file!==".." ) {
+                            $view .="<tr>";
+                            $view .= "<td><img src='". $uploaddir . $file . "' width='100px' height='70px'></td>";
+                            $view .= "<td>" . $file . "</td>";
+                            $view .= "<td>" . date("F d Y H:i:s.", filectime($uploaddir . $file)) . "</td>";
+                            $view .="</tr>";
+                        }
+
+
+                }
+                $view .= " </tbody></table>";
+            }
+            else{
+                $view .= "ERROR.{$uploaddir} is not directory!";
+            }
+        }
+        else{
+            $view .= "ERROR. Dir is not exist!";
+        }
+    }
+    $view .= "</pre>";
+    return $view;
+}
+
+function func_home7()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-7</h2>
+    <pre>";
+    $view .="<h3>Comments:</h3>";
+    $guest = "guestbook.txt";
+    $view .=read_file($guest);
+    if(!empty($_POST["ok"]))
+    {
+        header("Location: ".$_SERVER["REQUEST_URI"]);
+        $text = $_POST["text"];
+        $view.=write_file($guest,$text);
+
+    }
+    $view .= "<form method='post' action=''>   
+    <label>Your comment:</label><br><br> 
+    <textarea name='text'></textarea><br><br><br>
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+    $view .= "</pre>";
+    return $view;
+}
+
+ function write_file($file,$text)
+ {
+     $view="";
+     $date = date("Y-m-d H:i:s");
+     if(!empty($text)) {
+         $str = $date . ": " . $text . "\n";
+         if (file_exists($file)) {
+             $fp = fopen($file, "a+");
+             if ($fp) {
+                 $fw = fwrite($fp, $str);
+                 if (!$fw) {
+                     $view .= "ERROR! Can not write to file!";
+                 }
+
+             } else {
+                 $view .= "ERROR! File is unreadeable!";
+             }
+             fclose($fp);
+         }
+     }
+     else{
+         exit;
+     }
+     return $view;
+ }
+
+function read_file($file)
+{
+    $view="";
+    if(file_exists($file))
+    {
+        $fp = fopen($file,"r");
+        if($fp)
+        {
+            while (!feof($fp))
+            {
+                $view .=fgetc($fp);
+            }
+
+        }
+        else
+        {
+            $view.="ERROR! File is unreadeable!";
+        }
+        fclose($fp);
+    }
+    return $view;
+}
+
+function func_home8()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-8</h2>
+    <pre>";
+    $view .="<h3>Comments:</h3>";
+    $guest = "guestbook.txt";
+    $view .=read_file($guest);
+    if(!empty($_POST["ok"]))
+    {
+
+        $text = $_POST["text"];
+        $flag = check_mat($text);
+        if($flag)
+        {
+            header("Location: ".$_SERVER["REQUEST_URI"]);
+            $view .=write_file($guest,$text);
+        }
+       else{
+           $view.="Uncorrect comment";
+       }
+
+    }
+    $view .= "<form method='post' action=''>   
+    <label>Your comment:</label><br><br> 
+    <textarea name='text'></textarea><br><br><br>
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+    $view .= "</pre>";
+    return $view;
+}
+
+
+function check_mat($text)
+{
+    $mat = ["fuck","her","suck"];
+    foreach ($mat as &$value) {
+        if (!strstr($text, $value)) {
+            $flag = true;
+        }
+        else {
+            $flag = false;
+        }
+    }
+    return $flag;
+}
+
+function func_home9()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-9</h2>
+    <pre>";
+    $view .= "<form method='post' action=''>
+    <textarea name='text'></textarea><br><br>    
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+
+    if(!empty($_POST["ok"]))
+    {
+        $text = str_split($_POST["text"]);
+        $rev = array_reverse($text);
+        foreach ($rev as &$value)
+        {
+            $view.=$value;
+        }
+        unset($value);
+    }
+    $view .= "</pre>";
+    return $view;
+}
+
+function func_home10()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-10</h2>
+    <pre>";
+    $view .= "<form method='post' action=''>
+    <textarea name='text'></textarea><br><br>    
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+
+    if(!empty($_POST["ok"]))
+    {
+        $text = explode(" ",$_POST["text"]);
+        $arr= array_unique($text,SORT_STRING);
+        foreach ($arr as &$value)
+        {
+            $view.=$value.PHP_EOL;
+        }
+        unset($value);
+
+    }
+    $view .= "</pre>";
+    return $view;
+}
+
+function func_home11()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-11</h2>
+    <pre>";
+    $view .= "<form method='post' action=''>
+    <textarea name='text'></textarea><br><br>    
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+
+    $abc = ["А","Б","В","Г","Д","Е","Ж","З","И","Й","К","Л","М","Н","О","П","Р","С","Т","У","Ф","Х","Ч","Ц","Э","Ю","Я"];
+    $def = ["а","б","в","г","д","е","ж","з","и","й","к","л","м","н","о","п","р","с","т","у","ф","х","ч","ц","э","ю","я"];
+    $first="";
+    if(!empty($_POST["ok"]))
+    {
+        $text = explode(".",$_POST["text"]);
+        foreach ($text as &$value)
+        {
+            $value = strtolower(trim($value));
+            foreach ($def as $key => $litera)
+            {
+                if(substr($value,0,1)==$litera)
+                {
+                    $first = $abc[$key];
+                }
+            }
+            /*$str = mb_strtolower($value,'UTF-8');
+            $view .=ucfirst(trim($str)).PHP_EOL;*/
+            $view .=$first.substr($value,1).PHP_EOL;
+
+        }
+        unset($value);
+
+    }
+    $view .= "</pre>";
+    return $view;
+}
+
+function func_home12()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-12</h2>
+    <pre>";
+    $view .= "<form method='post' action=''>
+    <textarea name='text'></textarea><br><br>    
+    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+
+    if(!empty($_POST["ok"]))
+    {
+        $text = explode(".",$_POST["text"]);
+        $rev = array_reverse($text);
+        foreach ($rev as &$value)
+        {
+            $view.=$value.PHP_EOL;
+        }
+        unset($value);
+    }
+    $view .= "</pre>";
+    return $view;
+}
+
+function func_home13()
+{
+    $view = "
+    <a href='/?url=func&flag=0'>BACK</a>
+    <h2>TASK-13</h2>
+    <pre>";
+    $string = "яблоко черешня вишня вишня черешня груша яблоко черешня вишня яблоко вишня вишня черешня груша яблоко черешня черешня вишня яблоко вишня вишня черешня вишня черешня груша яблоко черешня черешня вишня яблоко вишня вишня черешня черешня груша яблоко черешня вишня";
+    $view.=$string.PHP_EOL;
+    $str = explode(" ",$string);
+    foreach ($str as $value)
+    {
+        $pos[$value] = substr_count($string,$value);
+
+    }
+    foreach ($pos as $key => $val)
+    {
+        $view.=$key." => ".$val.PHP_EOL;
+    }
+
+    $view .= "</pre>";
+    return $view;
+}
