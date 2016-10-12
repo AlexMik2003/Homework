@@ -150,42 +150,55 @@ function view($url,$flag)
                     $view .= func();
                     break;
                 case 1:
+                    include_once "functions_forms_tasks/func_task_1.php";
                     $view .= func_home1();
                     break;
                 case 2:
+                    include_once "functions_forms_tasks/func_task_2.php";
                     $view .= func_home2();
                     break;
                 case 3:
+                    include_once "functions_forms_tasks/func_task_3.php";
                     $view .= func_home3();
                     break;
                 case 4:
+                    include_once "functions_forms_tasks/func_task_4.php";
                     $view .= func_home4();
                     break;
                 case 5:
+                    include_once "functions_forms_tasks/func_task_5.php";
                     $view .= func_home5();
                     break;
                 case 6:
+                    include_once "functions_forms_tasks/func_task_6.php";
                     $view .= func_home6();
                     break;
                 case 7:
+                    include_once "functions_forms_tasks/func_task_7.php";
                     $view .= func_home7();
                     break;
                 case 8:
+                    include_once "functions_forms_tasks/func_task_8.php";
                     $view .= func_home8();
                     break;
                 case 9:
+                    include_once "functions_forms_tasks/func_task_9.php";
                     $view .= func_home9();
                     break;
                 case 10:
+                    include_once "functions_forms_tasks/func_task_10.php";
                     $view .= func_home10();
                     break;
                 case 11:
+                    include_once "functions_forms_tasks/func_task_11.php";
                     $view .= func_home11();
                     break;
                 case 12:
+                    include_once "functions_forms_tasks/func_task_12.php";
                     $view .= func_home12();
                     break;
                 case 13:
+                    include_once "functions_forms_tasks/func_task_13.php";
                     $view .= func_home13();
                     break;
             }
