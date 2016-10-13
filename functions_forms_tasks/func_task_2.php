@@ -12,31 +12,35 @@ function func_home2()
     <a href='/?url=func&flag=0'>BACK</a>
     <h2>TASK-2</h2>
     <pre>";
-    $view .= "<form method='post' action=''>
-    <textarea name='text'></textarea><br><br>   
-    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+    $view .= "<form action=\"\" method=\"post\">
+        <textarea name=\"text\" cols=\"30\" rows=\"5\"></textarea>
+        <br>
+        <input type=\"submit\" value=\"Send\">
+        </form>";
 
-    if(!empty($_POST["ok"]))
+    $words = [];
+    if (!empty($_POST['text'])) {
+        $text = $_POST['text'];
+        $words = str_word_count($text, 1);
+
+        usort($words, 'compareWords');
+        $words = array_slice($words, 0, 3);
+    }
+    $view .= "TOP MAX 3 WORD: ".PHP_EOL.PHP_EOL;
+    foreach ($words as $word)
     {
-        $text = $_POST["text"];
-        $pattern = '~(\w+)~';
-        preg_match_all($pattern, $text, $matches);
-        $arr = $matches[1];
-        for ($i = 0, $count = count($arr); $i < $count; $i++) {
-            for($j=0;$j<$count-1;$j++)
-            {
-                if(strlen($arr[$j]) < strlen($arr[$j+1]))
-                {
-                    $buffer = $arr[$j];
-                    $arr[$j] = $arr[$j+1];
-                    $arr[$j+1] = $buffer;
-                }
-            }
-
-        }
-        $view .= "TOP MAX 3 WORD: ".PHP_EOL.PHP_EOL;
-        $view .= $arr[0].PHP_EOL.$arr[1].PHP_EOL.$arr[2].PHP_EOL;
+        $view .= $word.PHP_EOL;
     }
     $view .= "</pre>";
     return $view;
+}
+
+function compareWords($a, $b)
+{
+    $lengthA = strlen($a);
+    $lengthB = strlen($b);
+    if ($lengthA == $lengthB) {
+        return 0;
+    }
+    return ($lengthA > $lengthB) ? -1 : 1;
 }

@@ -28,3 +28,4 @@ function func_home13()
     $view .= "</pre>";
     return $view;
 }
+

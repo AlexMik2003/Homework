@@ -13,19 +13,23 @@ function func_home12()
     <h2>TASK-12</h2>
     <pre>";
     $view .= "<form method='post' action=''>
-    <textarea name='text'></textarea><br><br>    
-    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+    <textarea name='text' cols=\"30\" rows=\"5\"></textarea><br><br>    
+    <input type='submit' value='Send' id='ok' name='ok'></form>";
 
-    if(!empty($_POST["ok"]))
+    if(!empty($_POST["text"]))
     {
-        $text = explode(".",$_POST["text"]);
-        $rev = array_reverse($text);
-        foreach ($rev as &$value)
+        $rev = reverse($_POST["text"]);
+        foreach ($rev as $value)
         {
             $view.=$value.PHP_EOL;
         }
-        unset($value);
     }
     $view .= "</pre>";
     return $view;
+}
+
+function reverse($text)
+{
+    $arr = explode(".",$text);
+    return array_reverse($arr);
 }

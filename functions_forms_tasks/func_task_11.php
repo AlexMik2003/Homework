@@ -13,33 +13,32 @@ function func_home11()
     <h2>TASK-11</h2>
     <pre>";
     $view .= "<form method='post' action=''>
-    <textarea name='text'></textarea><br><br>    
-    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+    <textarea name='text' cols=\"30\" rows=\"5\"></textarea><br><br>    
+    <input type='submit' value='Send' id='ok' name='ok'></form>";
 
-    $abc = ["А","Б","В","Г","Д","Е","Ж","З","И","Й","К","Л","М","Н","О","П","Р","С","Т","У","Ф","Х","Ч","Ц","Э","Ю","Я"];
-    $def = ["а","б","в","г","д","е","ж","з","и","й","к","л","м","н","о","п","р","с","т","у","ф","х","ч","ц","э","ю","я"];
-    $first="";
-    if(!empty($_POST["ok"]))
+    if(!empty($_POST["text"]))
     {
-        $text = explode(".",$_POST["text"]);
-        foreach ($text as &$value)
-        {
-            $value = strtolower(trim($value));
-            foreach ($def as $key => $litera)
-            {
-                if(substr($value,0,1)==$litera)
-                {
-                    $first = $abc[$key];
-                }
-            }
-            /*$str = mb_strtolower($value,'UTF-8');
-            $view .=ucfirst(trim($str)).PHP_EOL;*/
-            $view .=$first.substr($value,1).PHP_EOL;
-
-        }
-        unset($value);
-
+        $view .= get_one_sting($_POST["text"]);
     }
+
     $view .= "</pre>";
     return $view;
 }
+
+function get_one_sting($text)
+{
+    $view = "";
+    $str = explode(".",$text);
+    foreach ($str as $value)
+    {
+        $value = trim($value);
+        $length = mb_strlen($value);
+        $first_letter = mb_substr($value,0,1,"UTF-8");
+        $first_letter = mb_strtoupper($first_letter,"UTF-8");
+        $sting = mb_substr($value,1,$length,"UTF-8");
+        $view .=$first_letter.$sting.PHP_EOL;
+
+    }
+    return $view;
+}
+

@@ -13,20 +13,21 @@ function func_home10()
     <h2>TASK-10</h2>
     <pre>";
     $view .= "<form method='post' action=''>
-    <textarea name='text'></textarea><br><br>    
-    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
+    <textarea name='text' cols=\"30\" rows=\"5\"></textarea><br><br>    
+    <input type='submit' value='Send' id='ok' name='ok'><br><br><br>";
 
     if(!empty($_POST["ok"]))
     {
-        $text = explode(" ",$_POST["text"]);
-        $arr= array_unique($text,SORT_STRING);
-        foreach ($arr as &$value)
-        {
-            $view.=$value.PHP_EOL;
-        }
-        unset($value);
+        $counter = uniq_words($_POST["text"]);
+        $view .= "Count uniq word = ".$counter;
 
     }
     $view .= "</pre>";
     return $view;
+}
+
+function uniq_words($text)
+{
+    $str = explode(" ",$text);
+    return count(array_unique($str,SORT_STRING));
 }

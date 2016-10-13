@@ -12,37 +12,44 @@ $view = "
     <a href='/?url=func&flag=0'>BACK</a>
     <h2>TASK-3</h2>
     <pre>";
-    $view .= "<form method='post' action=''>
-    <input type='number' name='numb'><br><br>   
-    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
-    $file = "text.txt";
-    if(!empty($_POST["ok"]))
-    {
-        $numb = $_POST["numb"];
-        if($numb>3) {
-            $fp = fopen($file, "r+");
-            if ($fp) {
-                $arr = explode(" ", file_get_contents($file));
-                foreach ($arr as $key => $value) {
-                    if ((strlen($value) / 2) > $numb) {
-                        unset($arr[$key]);
-                    }
-                }
-                $arr = implode(" ", $arr);
-                $text = fwrite($fp, $arr);
-                if ($text) {
-                    fclose($fp);
-                } else {
-                    $view .= "ERROR!";
-                }
-            } else {
-                $view .= "ERROR. File is not exist!";
-            }
-        }
-        else{
-            $view .= "ERROR. Numb is too small. Min 3 symbols!";
-        }
+    $view .= " <form action=\"\" method=\"post\">
+        <input type=\"number\" name=\"word_length\">
+        <br>
+        <input type=\"submit\" value=\"Send\">
+        </form>";
+    if (!empty($_POST['word_length'])) {
+
+
+        $maxLength = intval($_POST['word_length']);
+        //var_dump($maxLength);
+        $file = 'text.txt';
+        $words = filterWorldsFromFile($file, $maxLength);
+        saveIntoFile($file, $words);
+        $words = filterWorldsFromFile($file, $maxLength);
     }
     $view .= "</pre>";
     return $view;
 }
+
+function filterWorldsFromFile($filename, $wordMaxLength)
+{
+$handler  = fopen($filename, 'r');
+        $words = [];
+        while (($line = fgets($handler)) !== false) {
+            $words[] = $line;
+        }
+        fclose($handler);
+        $words = array_filter(
+            $words,
+            function($item) use ($wordMaxLength) {
+                $item = trim($item, "\n");
+                return mb_strlen($item) <= $wordMaxLength;
+            }
+        );
+        return $words;
+    }
+    function saveIntoFile($filename, array $lines)
+    {
+        $data = implode('', $lines);
+        file_put_contents($filename, $data);
+    }

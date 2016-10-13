@@ -17,30 +17,25 @@ function func_home5()
     <input type='text' name='dir'><br><br>   
     <label>Write Search Word:</label><br><br> 
     <input type='text' name='word'><br><br>  
-    <input type='submit' value='GO' id='ok' name='ok'><br><br><br>";
-    if(!empty($_POST["ok"]))
+    <input type='submit' value='Send' id='ok' name='ok'></form><br><br>";
+    if(!empty($_POST["dir"]) && !empty($_POST["word"]))
     {
-        $dir = $_POST["dir"];
-        $word = $_POST["word"];
-        if(file_exists($dir)) {
-            if(is_dir($dir)) {
-                $files = scandir($dir);
-                foreach ($files as $file)
-                {
-                    if(!empty($word) && substr_count($file,$word) > 0) {
-                        $view .= $file . PHP_EOL;
-                    }
-
-                }
-            }
-            else{
-                $view .= "ERROR.{$dir} is not directory!";
-            }
-        }
-        else{
-            $view .= "ERROR. Dir is not exist!";
+        $files = getDirectoryListing($_POST["dir"],$_POST["word"]);
+        foreach ($files as $file)
+        {
+            $view .=$file.PHP_EOL;
         }
     }
     $view .= "</pre>";
     return $view;
+}
+
+function getDirectoryListing($dirName, $searchTerm)
+{
+    if (!is_dir($dirName)) {
+        trigger_error('Directory does not exist.', E_USER_WARNING);
+        return null;
+    }
+    chdir($dirName);
+    return glob("*{$searchTerm}*");
 }
