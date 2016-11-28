@@ -18,14 +18,14 @@ function func_home11()
 
     if(!empty($_POST["text"]))
     {
-        $view .= get_one_sting($_POST["text"]);
+        $view .= set_upper_letter($_POST["text"]);
     }
 
     $view .= "</pre>";
     return $view;
 }
 
-function get_one_sting($text)
+function set_upper_letter($text)
 {
     $view = "";
     $str = explode(".",$text);

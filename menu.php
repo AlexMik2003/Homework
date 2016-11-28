@@ -8,13 +8,23 @@
 
 return [
     [
-    "name" => "Циклы",
-    "url" => "cycles",
-    "flag" => 0,
+        "name" => "Циклы",
+        "url" => "cycles",
+        "flag" => 0,
     ],
     [
-    "name" => "Функции",
-    "url" => "func",
+        "name" => "Функции",
+        "url" => "func",
+        "flag" => 0,
+    ],
+    [
+        "name" => "Модуль1",
+        "url" => "module1",
+        "flag" => 0,
+    ],
+    [
+    "name" => "Script",
+    "url" => "script",
     "flag" => 0,
 ]
 ];

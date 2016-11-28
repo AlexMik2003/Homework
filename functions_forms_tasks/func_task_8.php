@@ -16,8 +16,8 @@ function func_home8()
     $file = "guestbook.txt";
     $view .=check_file($file);
     $view .= "<form method='post' action=''>   
-    <label>Your comment:</label><br><br> 
-    <textarea name='text' cols=\"30\" rows=\"5\"></textarea><br><br><br>
+    <label for='comment'>Your comment:</label><br><br> 
+    <textarea id='comment' name='text' cols=\"30\" rows=\"5\"></textarea><br><br><br>
     <input type='submit' value='Comment' id='ok' name='ok'></form>";
     if(!empty($_POST["text"]))
     {
@@ -29,6 +29,7 @@ function func_home8()
         else{
             add_comment($file,$_POST["text"]);
             header("Location: ".$_SERVER["REQUEST_URI"]);
+            exit;
         }
 
     }

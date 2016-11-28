@@ -3,6 +3,7 @@
 
 include_once "cycles.php";
 include_once "func.php";
+include_once "module1.php";
 
 if(isset($_GET["url"]))
 {
@@ -202,6 +203,39 @@ function view($url,$flag)
                     $view .= func_home13();
                     break;
             }
+            break;
+        case "module1":
+            switch($flag) {
+                case 0:
+                    $view .= "<a href='/'>BACK</a><br><br>";
+                    $view .= module1();
+                    break;
+                case 1:
+                    function getCategory()
+                    {
+                        return require "category.php";
+                    }
+                    $category = getCategory();
+                    $view .= "<a href='/'>BACK</a><br><br>";
+                    static $count=0;
+                    $str="";
+                    $view .= print_cats($category,$str,$count);
+                    break;
+                case 2:
+                    $view .= "<a href='/'>BACK</a><br><br>";
+                    $n=7;
+                    $view  = "Fibbonachi for {$n} = ";
+                    $view .= fibonacchi($n);
+                    break;
+                case 3:
+                    $n=5;
+                    $view  = "Factorial for {$n} = ";
+                    $view .= factorial($n);
+                    break;
+            }
+            break;
+        case "script":
+            include_once "script.php";
             break;
     }
     return $view;
